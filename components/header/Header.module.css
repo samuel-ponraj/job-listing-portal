@@ -1,0 +1,45 @@
+.headerContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 40px;
+    max-width: 1300px;
+    width: 100%;
+}
+
+.jobListingLogo{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+
+.headerButtons ul{
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.headerButtons ul li{
+    display: flex;
+    align-items: center;
+}
+
+.roleSwitchBtn{
+    padding: 10px 25px;
+    background-color: white;
+    color: var(--background);
+    border-radius: 10px;
+}
+
+.signInBtn{
+    border-radius: 10px;
+    padding: 10px 25px;
+    border: 1px solid white;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.signInBtn:hover{
+    background-color: white;
+    color: var(--background);
+}

@@ -1,0 +1,65 @@
+.container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.homePageBanner{
+    background: linear-gradient(to bottom, #2F2EA6, #3a39b0);
+    height: 100vh;
+    width: 100%;
+    display: flex;             
+    align-items: center;       
+    justify-content: center;
+}
+
+.homePageBannerContent{
+    max-width: 1300px;
+    width: 100%;
+    color: white;
+    padding: 20px;
+}
+
+.homePageBannerContent h1{
+    font-size: 50px;
+}
+
+.homePageBannerContent p{
+    font-size: 15px;
+    margin: 15px 0 40px 0;
+}
+
+.searchBox{
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.searchBox input{
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.searchBox button{
+  padding: 15px 30px;
+  background: var(--background);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color .3s ease;
+  border-radius: 10px;
+}
+
+.searchBox button:hover{
+  background: #4342c0;
+}
