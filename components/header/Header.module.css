@@ -1,4 +1,27 @@
-.headerContainer{
+.headerContainer {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+
+.solidLight {
+  background: transparent;
+}
+
+.solidHeavy {
+  background: var(--background);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+
+.headerSection{
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -11,12 +11,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <header>
           <Header />
         </header>
-        <main>
+        <main >
           {children}
         </main>
         {/* <footer className="footer">

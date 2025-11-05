@@ -12,6 +12,9 @@ body{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  align-items: center;
+  background: #F8F8F8;
 }
 
 * {
@@ -27,6 +30,9 @@ a {
 
 main{
   flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  
 }
 
 header{
