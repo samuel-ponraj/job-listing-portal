@@ -13,6 +13,11 @@
     align-items: center;
 }
 
+.userAvatar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .headerButtons ul{
     display: flex;
