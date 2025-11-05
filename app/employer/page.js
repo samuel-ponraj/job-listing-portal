@@ -1,9 +1,9 @@
-import Image from "next/image";
+import Home from '@/components/employer/home/Home'
 
 export default function Page() {
   return (
     <div>
-      This is an Employer Portal
+      <Home />
     </div>
   );
 }

@@ -35,7 +35,6 @@
     z-index: 2; 
 }
 
-
 .homePageBannerContent{
     max-width: 1300px;
     width: 100%;
@@ -82,5 +81,5 @@
 }
 
 .searchBox button:hover{
-  background: #0E2F78;
+  background: #4342c0;
 }
