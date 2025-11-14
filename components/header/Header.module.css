@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  height: 70px;
 }
 
 

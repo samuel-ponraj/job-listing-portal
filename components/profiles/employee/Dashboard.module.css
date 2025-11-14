@@ -1,0 +1,83 @@
+.container{
+    padding-top: 80px;
+}
+
+.statisticsCards {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Each Card */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 30px;
+  flex: 1 1 280px; /* responsive size */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon Section */
+.card > div:first-child {
+  background-color: #f0f8f8;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+    color: var(--background);
+}
+
+/* Text Section */
+.card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.card p {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--background);
+  margin: 0;
+  line-height: 1;
+}
+
+.card h3 {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .statisticsCards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+    justify-content: flex-start;
+  }
+
+  .card p {
+    font-size: 1.8rem;
+  }
+}

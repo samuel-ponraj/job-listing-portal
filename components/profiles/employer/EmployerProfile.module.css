@@ -8,11 +8,10 @@
 
 .toolbarImage {
     display: flex;
-    
 }
 
 .toolbarImage img{
-    border-radius: 50%;
+    border-radius: 50%
 }
 
 .toolbarName p{

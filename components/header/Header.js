@@ -60,6 +60,11 @@ const Header = () => {
     saveUserToFirestore();
   }, [isSignedIn, user]);
 
+    const homeLink = pathname.startsWith("/employer") ? "/employer" : "/";
+    const profilePath = pathname.startsWith("/employer") ? "/employer/profile" : "/profile";
+    const headerLink = pathname.startsWith("/employer") ? "Find Jobs" : "Post Jobs";
+    const logoLink = pathname.startsWith("/employer") ? "Employer Portal" : "Job Listing Portal";
+
   return (
     <div
       className={`${styles.headerContainer} ${
@@ -73,11 +78,15 @@ const Header = () => {
       <div className={styles.headerSection}>
         <div className={styles.jobListingLogo}>
           <Link href={employerPortal ? "/employer" : "/"}>
-            {employerPortal ? "Employer Portal" : "Job Listing Portal"}
+            {logoLink}
           </Link>
         </div>
         <div className={styles.headerButtons}>
           <ul>
+            <Link href={homeLink}>
+              <li>Home</li>
+            </Link>
+            
             <SignedOut>
               <li className={styles.signInBtn} style={{ cursor: "pointer" }}>
                 <SignInButton mode="modal">
@@ -93,22 +102,23 @@ const Header = () => {
                     <UserButton.Link
                       label="Manage profile"
                       labelIcon={<ImProfile />}
-                      href="/profile"
+                      href={profilePath}
                     />
                   </UserButton.MenuItems>
                 </UserButton>
               </li>
             </SignedIn>
 
-            {!employerPortal ? (
+            {headerLink === "Find Jobs" ? (
               <li className={styles.roleSwitchBtn}>
-                <Link href="/employer">Post Jobs</Link>
+                <Link href="/">{headerLink}</Link>
               </li>
-            ) : (
+            ):(
               <li className={styles.roleSwitchBtn}>
-                <Link href="/">Find Jobs</Link>
+                <Link href="/employer">{headerLink}</Link>
               </li>
             )}
+
           </ul>
         </div>
       </div>
