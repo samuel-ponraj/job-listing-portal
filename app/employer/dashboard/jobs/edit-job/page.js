@@ -1,4 +1,4 @@
-import EditJob from "@/components/profiles/employer/jobs/editJob/EditJob";
+import EditJob from "@/components/profiles/employer/jobs/editjob/EditJob";
 
 export default function Page() {
   return (
@@ -7,3 +7,4 @@ export default function Page() {
     </div>
   );
 }
+
