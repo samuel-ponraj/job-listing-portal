@@ -61,7 +61,7 @@ const Header = () => {
   }, [isSignedIn, user]);
 
     const homeLink = pathname.startsWith("/employer") ? "/employer" : "/";
-    const profilePath = pathname.startsWith("/employer") ? "/employer/profile" : "/profile";
+    const profilePath = pathname.startsWith("/employer") ? "/employer/dashboard" : "/dashboard";
     const headerLink = pathname.startsWith("/employer") ? "Find Jobs" : "Post Jobs";
     const logoLink = pathname.startsWith("/employer") ? "Employer Portal" : "Job Listing Portal";
 

@@ -1,37 +1,164 @@
-
-import { Box, Toolbar } from '@mui/material';
-import { Toaster, toast } from 'sonner'
+'use client'
+import { Box, Button, Toolbar } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
+import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
+import { storage } from '@/lib/firebase';
 
 const ProfileForm = () => {
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  const [formData, setFormData] = useState({
+    companyLogoURL: "",
+    companyLogoStoragePath: "",
+    companyName: "",
+    contactPerson: "",
+    email: "",
+    phone: "",
+    website: "",
+    industry: "",
+    companySize: "",
+    address: "",
+    city: "",
+    pincode: "",
+    state: "",
+    country: "",
+    description: "",
+  });
 
+  // ---------------- FETCH COMPANY PROFILE --------------------
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("/api/company", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          if (data.company) {
+            setFormData((prev) => ({ ...prev, ...data.company }));
+          }
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // ------------------- LOGO UPLOAD ---------------------------
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      setUploading(true);
+
+      // Delete old logo
+      if (formData?.companyLogoStoragePath) {
+        const oldRef = ref(storage, formData.companyLogoStoragePath);
+        await deleteObject(oldRef).catch(() => {});
+      }
+
+      // Upload new logo
+      const fileRef = ref(
+        storage,
+        `users/companyLogos/${file.name}-${Date.now()}`
+      );
+
+      await uploadBytes(fileRef, file);
+      const downloadURL = await getDownloadURL(fileRef);
+
+      const updatedData = {
+        ...formData,
+        companyLogoURL: downloadURL,
+        companyLogoStoragePath: fileRef.fullPath,
+      };
+
+      setFormData(updatedData);
+
+      // Save updated company data
+      const res = await fetch("/api/company", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ company: updatedData }),
+      });
+
+      if (res.ok) {
+        toast.success("Company logo updated!");
+      } else {
+        const err = await res.json();
+        toast.error(err.error || "Failed to update logo");
+      }
+    } catch (err) {
+      console.error("Error uploading logo:", err);
+      toast.error("Error uploading logo");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // ------------------- FORM SUBMIT ---------------------------
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("/api/company", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ company: formData }),
+      });
+
+      if (res.ok) {
+        toast.success("Company details saved successfully!");
+      } else {
+        const err = await res.json();
+        toast.error(err.error || "Failed to save company details");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.error(error);
+    }
+  };
+
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
-    <Box
-      component="section"
-      sx={{
-        flexGrow: 1,
-      }}
-    >
+    <Box component="section" sx={{ flexGrow: 1 }}>
       <Toaster position="top-center" richColors />
       <Toolbar />
 
-      <Box
-        component="form"
+      <Box component="form"
+        onSubmit={handleSubmit}
         sx={{
           display: 'grid',
           gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
           gap: 3,
         }}
       >
+
         {/* Upload Company Logo */}
         <Box sx={{ gridColumn: '1 / span 2' }}>
           <label style={{ display: 'block', fontWeight: 500, marginBottom: 8 }}>
             Upload Company Logo
           </label>
+
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <img
-              src="/placeholder.png"
+              src={formData.companyLogoURL || "/placeholder.png"}
               alt="Company Logo"
               style={{
                 width: 100,
@@ -41,7 +168,8 @@ const ProfileForm = () => {
                 border: '1px solid #ccc',
               }}
             />
-            <label  
+
+            <label
               htmlFor="logoUpload"
               style={{
                 display: 'inline-block',
@@ -52,29 +180,43 @@ const ProfileForm = () => {
                 background: '#f7f7f7',
               }}
             >
-              Browse
+              {uploading ? "Uploading..." : "Browse"}
             </label>
-            <input id="logoUpload" type="file" style={{ display: 'none' }} />
+
+            <input
+              id="logoUpload"
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+              required
+              name="companyLogo" 
+            />
           </Box>
         </Box>
 
         {/* Company Name */}
         <Box>
           <label>Company Name</label>
-          <input
+          <input name="companyName"
+            value={formData.companyName}
+            onChange={handleChange}
             type="text"
             placeholder="Enter Company Name"
             style={inputStyle}
+            required
           />
         </Box>
 
         {/* Contact Person */}
         <Box>
           <label>Contact Person</label>
-          <input
+          <input name="contactPerson"
+            value={formData.contactPerson}
+            onChange={handleChange}
             type="text"
-            placeholder="Enter Contact Person Name"
+            placeholder="Enter Contact Person"
             style={inputStyle}
+            required
           />
         </Box>
 
@@ -82,39 +224,55 @@ const ProfileForm = () => {
         <Box>
           <label>Email</label>
           <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             type="email"
             placeholder="Enter Company Email"
             style={inputStyle}
+            required
           />
         </Box>
 
-        {/* Phone Number */}
+        {/* Phone */}
         <Box>
           <label>Phone Number</label>
           <input
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
             type="tel"
             placeholder="Enter Contact Number"
             style={inputStyle}
+            required
           />
         </Box>
 
         {/* Website */}
-        <Box sx={{ gridColumn: '1 / span 2' }}>
+        <Box sx={{ gridColumn: "1 / span 2" }}>
           <label>Website</label>
           <input
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
             type="url"
-            placeholder="Enter Company Website URL"
+            placeholder="Company Website URL"
             style={inputStyle}
+            required
           />
         </Box>
 
-        {/* Industry Type */}
+        {/* Industry */}
         <Box>
           <label>Industry Type</label>
           <input
+            name="industry"
+            value={formData.industry}
+            onChange={handleChange}
             type="text"
-            placeholder="e.g. IT, Healthcare, Education"
+            placeholder="IT, Healthcare, Education"
             style={inputStyle}
+            required
           />
         </Box>
 
@@ -122,61 +280,115 @@ const ProfileForm = () => {
         <Box>
           <label>Company Size</label>
           <input
+            name="companySize"
+            value={formData.companySize}
+            onChange={handleChange}
             type="number"
-            placeholder="Number of Employees"
+            placeholder="Employees Count"
             style={inputStyle}
+            required
           />
         </Box>
 
-        {/* Address Line 1 */}
-        <Box sx={{ gridColumn: '1 / span 2' }}>
-          <label>Address Line 1</label>
+        {/* Address */}
+        <Box sx={{ gridColumn: "1 / span 2" }}>
+          <label>Address Line</label>
           <input
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
             type="text"
-            placeholder="Enter Street Address"
+            placeholder="Street Address"
             style={inputStyle}
+            required
           />
         </Box>
 
         {/* City */}
         <Box>
           <label>City</label>
-          <input type="text" placeholder="Enter City" style={inputStyle} />
+          <input
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            type="text"
+            placeholder="City"
+            style={inputStyle}
+            required
+          />
         </Box>
 
         {/* Pincode */}
         <Box>
           <label>Pincode</label>
-          <input type="text" placeholder="Enter Pincode" style={inputStyle} />
+          <input
+            name="pincode"
+            value={formData.pincode}
+            onChange={handleChange}
+            type="text"
+            placeholder="Pincode"
+            style={inputStyle}
+            required
+          />
         </Box>
 
         {/* State */}
         <Box>
           <label>State</label>
-          <input type="text" placeholder="Enter State" style={inputStyle} />
+          <input
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            type="text"
+            placeholder="State"
+            style={inputStyle}
+            required
+          />
         </Box>
 
         {/* Country */}
         <Box>
           <label>Country</label>
-          <input type="text" placeholder="Enter Country" style={inputStyle} />
+          <input
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            type="text"
+            placeholder="Country"
+            style={inputStyle}
+            required
+          />
         </Box>
 
-        {/* Company Description */}
-        <Box sx={{ gridColumn: '1 / span 2' }}>
+        {/* Description */}
+        <Box sx={{ gridColumn: "1 / span 2" }}>
           <label>Company Description</label>
           <textarea
-            placeholder="Write a brief description about the company"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
             rows={4}
+            placeholder="Enter a brief description"
             style={textareaStyle}
-          ></textarea>
+            required
+          />
+        </Box>
+
+        <Box sx={{ gridColumn: "1 / span 2", textAlign: "center" }}>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2, backgroundColor: "var(--background)" }}
+          >
+            Save Company Profile
+          </Button>
         </Box>
       </Box>
     </Box>
   );
 };
 
-// Reusable inline styles
+// Reusable Styles
 const inputStyle = {
   width: '100%',
   padding: '10px',
