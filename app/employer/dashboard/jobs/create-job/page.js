@@ -1,4 +1,4 @@
-import CreateJob from "@/components/profiles/employer/jobs/createJob/CreateJob";
+import CreateJob from "@/components/profiles/employer/jobs/createjob/CreateJob";
 
 export default function Page() {
   return (
