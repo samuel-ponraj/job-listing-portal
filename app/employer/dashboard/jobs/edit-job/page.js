@@ -1,10 +1,11 @@
 import EditJob from "@/components/profiles/employer/jobs/editjob/EditJob";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <EditJob /> 
-    </div>
+    </Suspense>
   );
 }
 
