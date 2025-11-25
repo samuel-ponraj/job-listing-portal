@@ -36,7 +36,6 @@ const Dashboard = () => {
             <h3>Views</h3>
           </div>
         </div>
-        
       </div>
     </section>
   );

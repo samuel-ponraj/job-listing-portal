@@ -135,10 +135,10 @@ const ProfileForm = () => {
       component="section"
       sx={{
         flexGrow: 1,
+        marginTop:'30px'
       }}
     >
       <Toaster position="top-center" richColors />
-      <Toolbar />
 
       <Box
         component="form"
@@ -348,6 +348,7 @@ const inputStyle = {
   border: '1px solid #ccc',
   borderRadius: '6px',
   marginTop: '6px',
+  boxShadow: '  rgba(0, 0, 0, 0.04) 0px 3px 5px'
 };
 
 export default ProfileForm;

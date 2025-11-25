@@ -1,0 +1,148 @@
+.container{
+    padding-top: 68px;
+}
+
+.headerContainer{
+    background-color: #DDE8F8;
+    padding: 80px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.jobDetailsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 40px 20px;
+}
+
+.header{
+    max-width: 1200px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headerLeft{
+    display: flex;
+    gap: 20px;
+}
+
+.headerRight{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.headerRight p{
+    font-size: 14px;
+}
+
+.headerApplyBtn{
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 10px 60px;
+    background-color: var(--background);
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.headerImage img{
+    border-radius: 8px;
+}
+
+.headerDetails h1{
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.headerDetails h2{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+.headerJobdetails{
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+    color: #6b7280;
+}
+
+.headerJobdetails p{
+    display: flex;
+    gap: 10px;
+}
+
+.jobType, .workMode{
+    border: 2px solid var(--background);
+    border-radius: 50px;
+    padding: 5px 25px;
+    font-size: 14px;
+}
+
+.jobDetailsSection{
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+/* .jobDetails{
+    flex-basis: 60%;
+} */
+
+/* .companyDetailsContainer{
+    flex-basis: 40%;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.companyDetailsContainer h2{
+    color: var(--background);
+    margin-bottom: 10px;
+}
+
+.companyDetailsHeader h3{
+    color: var(--background);
+}
+
+.companyDetailsHeader img{
+    border-radius: 10px;
+}
+
+.companyDetails{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.companyDetailsHeader{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.companyDetails p:first-child{
+    font-weight: 600;
+    color: var(--background);
+}
+
+.companyDetails p:last-child{
+    color: gray;
+} */
+
+
+
+

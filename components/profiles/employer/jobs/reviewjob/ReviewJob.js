@@ -3,49 +3,92 @@
 import { useEffect, useState } from "react";
 import styles from "./ReviewJob.module.css";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc, updateDoc, query, where, getDoc } from "firebase/firestore";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const ReviewJob = () => {
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState([]);
   const [approvalStatus, setApprovalStatus] = useState({});
   const [approvedJobs, setApprovedJobs] = useState([]);
+  const { user, isLoaded } = useUser();
+  const loggedUserId = user?.id;
+  const router = useRouter();
+
+
+  const handleCreateJobClick = async () => {
+  try {
+    const userRef = doc(db, "users", loggedUserId);
+    const userSnap = await getDoc(userRef);
+
+    const userData = userSnap.data();
+
+    const hasCompanyProfile =
+      userData?.company && Object.keys(userData.company).length > 0;
+
+    if (!hasCompanyProfile) {
+      toast.warning("Please create a company profile first to post a job");
+      router.push("/employer/dashboard/profile");
+      return;
+    }
+
+    // Otherwise go to create job page
+    router.push("/employer/dashboard/jobs/create-job");
+
+  } catch (err) {
+    console.error("Company profile check failed:", err);
+  }
+};
+
+  
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "jobs"));
-        const jobs = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  if (!isLoaded || !loggedUserId) return;
 
-        // sort newest first
-        jobs.sort((a, b) => {
-          const dateA = a.createdAt?.toDate?.() || new Date(a.createdAt);
-          const dateB = b.createdAt?.toDate?.() || new Date(b.createdAt);
-          return dateB - dateA;
-        });
+  const fetchJobs = async () => {
+    try {
+      // Fetch jobs only created by the logged in company
+      const q = query(
+        collection(db, "jobs"),
+        where("userId", "==", loggedUserId)
+      );
 
-        setJobs(jobs);
+      const querySnapshot = await getDocs(q);
+      const jobsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        const initialApproval = {};
-        const approvedList = [];
+      // sort newest first
+      jobsData.sort((a, b) => {
+        const dateA = a.createdAt?.toDate?.() || new Date(a.createdAt);
+        const dateB = b.createdAt?.toDate?.() || new Date(b.createdAt);
+        return dateB - dateA;
+      });
 
-        jobs.forEach((job) => {
-          initialApproval[job.id] = job.approved || false;
-          if (job.approved) approvedList.push(job);
-        });
+      setJobs(jobsData);
 
-        setApprovalStatus(initialApproval);
-        setApprovedJobs(approvedList);
-      } catch (err) {
-        console.error("Error loading jobs", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const initialApproval = {};
+      const approvedList = [];
 
-    fetchJobs();
-  }, []);
+      jobsData.forEach(job => {
+        initialApproval[job.id] = job.approved || false;
+        if (job.approved) approvedList.push(job);
+      });
+
+      setApprovalStatus(initialApproval);
+      setApprovedJobs(approvedList);
+
+    } catch (err) {
+      console.error("Error loading jobs", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchJobs();
+}, [isLoaded, loggedUserId]);
+
 
   const toggleApproval = async (jobId) => {
     const newStatus = !approvalStatus[jobId];
@@ -75,7 +118,12 @@ const ReviewJob = () => {
       {loading ? (
         <p>Loading jobs...</p>
       ) : jobs.length === 0 ? (
-        <div>No jobs found.</div>
+        <div className={styles.createFirstJob}>
+          <h1>Create Your First Job Posting</h1>
+          <Link href='/employer/dashboard/jobs/create-job'>
+            <button onClick={handleCreateJobClick}>Create Job</button>
+          </Link>
+        </div>
       ) : (
         <>
         <div className={styles.buttonWrapper}>

@@ -2,28 +2,31 @@
 import styles from './EmployerProfile.module.css'
 import PropTypes from 'prop-types';
 import {
-  AppBar,
   Box,
   CssBaseline,
   Divider,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
   useMediaQuery
 } from '@mui/material';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useUser } from '@clerk/nextjs';
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from 'react';
+import Overview from './overview/Overview';
+import { IoBriefcase } from "react-icons/io5";
+import { IoDocumentTextSharp } from "react-icons/io5";
 
 function EmployeeProfile({ children, ...props }) {
 
@@ -40,10 +43,10 @@ function EmployeeProfile({ children, ...props }) {
   const { user } = useUser();
 
   const menuItems = [
-    { text: "User Dashboard", icon: <DashboardIcon />, path: "/employer/dashboard" },
-    { text: "Profile", icon: <AccountCircleIcon />, path: "/employer/dashboard/profile" },
-    { text: "Jobs", icon: <AccountCircleIcon />, path: "/employer/dashboard/jobs" },
-    { text: "Applications", icon: <AccountCircleIcon />, path: "/employer/dashboard/applications" },
+    { text: "Overview", icon: <DashboardIcon />, path: "/employer/dashboard", color: "#673AB7"  },
+    { text: "Profile", icon: <AccountCircleIcon />, path: "/employer/dashboard/profile", color: "#3F51B5"  },
+    { text: "Jobs", icon: <IoBriefcase />, path: "/employer/dashboard/jobs", color: "#ff6200ff"  },
+    { text: "Applications", icon: <IoDocumentTextSharp />, path: "/employer/dashboard/applications", color: "green"  },
   ];
 
   const getPageTitle = () => {
@@ -54,6 +57,46 @@ function EmployeeProfile({ children, ...props }) {
     if (pathname === "/employer/dashboard/applications") return "Applications";
     return "Dashboard";
   };
+
+  const generateBreadcrumbs = () => {
+  const pathParts = pathname.split("/").filter(Boolean);
+
+  const breadcrumbItems = [];
+
+  pathParts.forEach((part, index) => {
+    const href = "/" + pathParts.slice(0, index + 1).join("/");
+
+    const isLast = index === pathParts.length - 1;
+
+    // Capitalize
+    const label = part
+      .replace("-", " ")
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+
+    if (isLast) {
+      breadcrumbItems.push(
+        <Typography key={href} color="text.primary">
+          {label}
+        </Typography>
+      );
+    } else {
+      breadcrumbItems.push(
+        <Link
+          key={href}
+          underline="hover"
+          color="inherit"
+          onClick={() => router.push(href)}
+          sx={{ cursor: "pointer" }}
+        >
+          {label}
+        </Link>
+      );
+    }
+  });
+
+  return breadcrumbItems;
+};
+
 
   const drawer = (
     <div>
@@ -78,7 +121,7 @@ function EmployeeProfile({ children, ...props }) {
               onClick={() => router.push(item.path)}
               selected={pathname === item.path}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon className={styles.icon}  style={{ color: item.color }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
@@ -93,7 +136,7 @@ function EmployeeProfile({ children, ...props }) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      <AppBar
+      {/* <AppBar
         position="fixed"
         color="default"
         elevation={0}
@@ -118,7 +161,7 @@ function EmployeeProfile({ children, ...props }) {
             {getPageTitle()}
           </Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
 
       {/* Sidebar */}
       <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }}}>
@@ -154,9 +197,18 @@ function EmployeeProfile({ children, ...props }) {
           p: 3,
           mt: "75px",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          background:'#F5F7FC',
+          minHeight:'100vh'
         }}
-      >
-        {children}
+      > 
+        <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="small" />}
+            aria-label="breadcrumb"
+            sx={{ mb: 2 }}
+          >
+            {generateBreadcrumbs()}
+          </Breadcrumbs>
+        {pathname === '/employer/dashboard' ? <Overview /> : children}
       </Box>
     </Box>
   );

@@ -84,3 +84,8 @@
 .searchBox button:hover{
   background: #0E2F78;
 }
+
+
+.featuredJobsSection{
+  margin: 60px 0;
+}

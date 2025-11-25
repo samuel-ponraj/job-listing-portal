@@ -1,7 +1,10 @@
+'use client'
 import styles from './Home.module.css'
+import FeaturedJobs from '@/components/jobs/featuredjobs/FeaturedJobs'
 
 
 const Home = () => {
+
   return (
     <main className={styles.container}>
         <section className={styles.homePageBanner}>
@@ -13,6 +16,10 @@ const Home = () => {
                     <button>Search</button>
                 </div>
             </div>
+        </section>
+
+        <section className={styles.featuredJobsSection}>
+          <FeaturedJobs />
         </section>
     </main>
   )

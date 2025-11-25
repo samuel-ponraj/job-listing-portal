@@ -86,6 +86,9 @@ const Header = () => {
             <Link href={homeLink}>
               <li>Home</li>
             </Link>
+            <Link href='/jobs'>
+              <li>Jobs</li>
+            </Link>
             
             <SignedOut>
               <li className={styles.signInBtn} style={{ cursor: "pointer" }}>

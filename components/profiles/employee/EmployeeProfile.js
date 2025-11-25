@@ -18,17 +18,24 @@ import {
   useMediaQuery
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { useState } from 'react';
 import ProfileForm from './ProfileForm';
 import ResumeUpload from './ResumeUpload';
-import Dashboard from './Dashboard';
 import { useUser } from "@clerk/clerk-react";
+import AppliedJobs from './appliedjobs/AppliedJobs';
+import { FaCircleCheck } from "react-icons/fa6";
+// import Breadcrumbs from '@mui/material/Breadcrumbs';
+// import Link from '@mui/material/Link';
+// import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+// import { usePathname } from 'next/navigation';
 
 
 function EmployeeProfile(props) {
+
+  // const pathname = usePathname();
+
   const { window } = props;
   const isSmallScreen = useMediaQuery('(max-width:1024px)');
   const drawerWidth = isSmallScreen ? 240 : 300;
@@ -54,9 +61,10 @@ function EmployeeProfile(props) {
 
 
   const menuItems = [
-    { text: 'User Dashboard', icon: <DashboardIcon />, value: 'Dashboard' },
-    { text: 'Profile', icon: <AccountCircleIcon />, value: 'Profile' },
-    { text: 'Resume', icon: <DescriptionIcon />, value: 'Resume' },
+    // { text: 'Overview', icon: <DashboardIcon />, value: 'Overview' },
+    { text: 'Profile', icon: <AccountCircleIcon />, value: 'Profile', color: "#3F51B5" },
+    { text: 'Resume', icon: <DescriptionIcon />, value: 'Resume', color: "#FB8C00"  },
+    { text: 'Applied Jobs', icon: <FaCircleCheck />, value: 'Applied Jobs', color: "green"  },
   ];
 
   const userImage = user?.imageUrl
@@ -82,7 +90,7 @@ function EmployeeProfile(props) {
               onClick={() => setSelectedSection(item.value)} // 👈 Switch content
               selected={selectedSection === item.value} // highlight active item
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemIcon className={styles.icon} style={{ color: item.color }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
           </ListItem>
@@ -100,10 +108,51 @@ function EmployeeProfile(props) {
         return <ProfileForm />;
       case 'Resume':
         return <ResumeUpload />;
+      case 'Applied Jobs':
+        return <AppliedJobs />;  
       default:
-        return <Dashboard />;
+        return <AppliedJobs />;
     }
   };
+
+//   const generateBreadcrumbs = () => {
+//   const pathParts = pathname.split("/").filter(Boolean);
+
+//   const breadcrumbItems = [];
+
+//   pathParts.forEach((part, index) => {
+//     const href = "/" + pathParts.slice(0, index + 1).join("/");
+
+//     const isLast = index === pathParts.length - 1;
+
+//     // Capitalize
+//     const label = part
+//       .replace("-", " ")
+//       .replace(/\b\w/g, (l) => l.toUpperCase());
+
+//     if (isLast) {
+//       breadcrumbItems.push(
+//         <Typography key={href} color="text.primary">
+//           {label}
+//         </Typography>
+//       );
+//     } else {
+//       breadcrumbItems.push(
+//         <Link
+//           key={href}
+//           underline="hover"
+//           color="inherit"
+//           onClick={() => router.push(href)}
+//           sx={{ cursor: "pointer" }}
+//         >
+//           {label}
+//         </Link>
+//       );
+//     }
+//   });
+
+//   return breadcrumbItems;
+// };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -131,7 +180,7 @@ function EmployeeProfile(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 600 }}>
-            {selectedSection === 'Dashboard' ? 'User Dashboard' : selectedSection}
+            {selectedSection === 'Dashboard' ? 'Applied Jobs' : selectedSection}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -174,6 +223,13 @@ function EmployeeProfile(props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
+        {/* <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="small" />}
+            aria-label="breadcrumb"
+            sx={{ mb: 2 }}
+          >
+            {generateBreadcrumbs()}
+          </Breadcrumbs> */}
         {renderMainContent()}
       </Box>
     </Box>

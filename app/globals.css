@@ -14,7 +14,12 @@ body{
   flex-direction: column;
   width: 100%;
   align-items: center;
-  background: #F8F8F8;
+  background: #F5F7FC;
+  color: #202124;
+}
+
+html{
+  overflow-x: hidden;
 }
 
 * {
