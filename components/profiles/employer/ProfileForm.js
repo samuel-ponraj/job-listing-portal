@@ -5,6 +5,9 @@ import { Toaster, toast } from 'sonner';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { storage } from '@/lib/firebase';
 
+import { Editor } from 'primereact/editor'; 
+import 'primeicons/primeicons.css';
+
 const ProfileForm = () => {
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -188,7 +191,6 @@ const ProfileForm = () => {
               type="file"
               style={{ display: 'none' }}
               onChange={handleFileChange}
-              required
               name="companyLogo" 
             />
           </Box>
@@ -360,19 +362,25 @@ const ProfileForm = () => {
           />
         </Box>
 
-        {/* Description */}
+        
+    
+
         <Box sx={{ gridColumn: "1 / span 2" }}>
-          <label>Company Description</label>
-          <textarea
+          <label htmlFor="description" style={{marginBottom:'10px'}}>Company Description</label>
+          <Editor
             name="description"
             value={formData.description}
-            onChange={handleChange}
-            rows={4}
-            placeholder="Enter a brief description"
-            style={textareaStyle}
+            onTextChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                description: e.htmlValue,  
+              }))
+            } 
             required
+            style={{ minHeight: '300px', backgroundColor: 'white' }}
           />
-        </Box>
+          </Box>
+        
 
         <Box sx={{ gridColumn: "1 / span 2", textAlign: "center" }}>
           <Button

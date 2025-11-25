@@ -5,6 +5,8 @@ import { Toaster, toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { Editor } from 'primereact/editor'; 
+import 'primeicons/primeicons.css';
 
 const EditJob = () => {
   const searchParams = useSearchParams();
@@ -264,17 +266,23 @@ const EditJob = () => {
                       </div>
                   </Box>
 
-        <Box sx={{ gridColumn: "1 / span 2" }}>
-          <label>Job Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows={4}
-            style={textareaStyle}
-            required
-          />
-        </Box>
+
+                <Box sx={{ gridColumn: "1 / span 2" }}>
+                  <label htmlFor="description" style={{marginBottom:'10px'}}>Job Description</label>
+                  <Editor
+                    name="description"
+                    value={formData.description}
+                    onTextChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: e.htmlValue,  
+                      }))
+                    } 
+                    placeholder="Enter job description..."
+                    required
+                    style={{ minHeight: '300px', backgroundColor: 'white' }}
+                  />
+                </Box>
 
         <Box sx={{ gridColumn: "1 / span 2", textAlign: "center" }}>
           <Button

@@ -117,8 +117,8 @@ export default function JobDetailPage({ jobId }) {
       <div className={styles.jobDetailsContainer}>
 		<div className={styles.jobDetailsSection}>
 			<div className={styles.jobDetails}>
-				<h3>Description</h3>
-				<p>{job.description || "No description available"}</p>
+				<h1>Job Descriptions</h1>
+				<div dangerouslySetInnerHTML={{ __html: job.description }} />
 			</div>
 			{/* <div className={styles.companyDetailsContainer}>
 				<h2>About Company</h2>

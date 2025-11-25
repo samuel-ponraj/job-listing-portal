@@ -110,7 +110,6 @@ function EmployeeProfile({ children, ...props }) {
         </div>
         <div className={styles.toolbarName}>
           <h3>{user?.firstName} {user?.lastName}</h3>
-          <p>Chennai, India</p>
         </div>
       </Toolbar>
       <Divider />

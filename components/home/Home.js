@@ -16,6 +16,9 @@ const Home = () => {
                     <button>Search</button>
                 </div>
             </div>
+            <div>
+              {/* <img src="/man.png" alt="man" /> */}
+            </div>
         </section>
 
         <section className={styles.featuredJobsSection}>

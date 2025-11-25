@@ -2,6 +2,8 @@
 import { Box, Button, Toolbar } from "@mui/material";
 import { useState } from "react";
 import { Toaster, toast } from "sonner";
+import { Editor } from 'primereact/editor'; 
+import 'primeicons/primeicons.css';
 
 const Jobs = () => {
 
@@ -240,7 +242,7 @@ const handleSubmit = async (e) => {
             </div>
         </Box>
 
-        {/* Description */}
+        {/* Description
         <Box sx={{ gridColumn: "1 / span 2" }}>
           <label>Job Description</label>
           <textarea
@@ -252,7 +254,24 @@ const handleSubmit = async (e) => {
             style={textareaStyle}
             required
           />
-        </Box>
+        </Box> */}
+
+        <Box sx={{ gridColumn: "1 / span 2" }}>
+                  <label htmlFor="description" style={{marginBottom:'10px'}}>Job Description</label>
+                  <Editor
+                    name="description"
+                    value={formData.description}
+                    onTextChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: e.htmlValue,  
+                      }))
+                    } 
+                    placeholder="Enter job description..."
+                    required
+                    style={{ minHeight: '300px', backgroundColor: 'white' }}
+                  />
+                  </Box>
 
         <Box sx={{ gridColumn: "1 / span 2", textAlign: "center" }}>
           <Button

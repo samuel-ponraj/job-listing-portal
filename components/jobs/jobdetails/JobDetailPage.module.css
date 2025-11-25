@@ -1,5 +1,6 @@
 .container{
     padding-top: 68px;
+    
 }
 
 .headerContainer{
@@ -48,12 +49,21 @@
     margin-top: 20px;
     font-size: 18px;
     padding: 10px 60px;
+    background-color: transparent;
+    color: var(--background);
+    border: 1px solid var(--background);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.headerApplyBtn:hover{
     background-color: var(--background);
     color: white;
     border: 1px solid white;
-    border-radius: 10px;
-    cursor: pointer;
 }
+
+
 
 .headerImage img{
     border-radius: 8px;
@@ -62,6 +72,7 @@
 .headerDetails h1{
     font-size: 26px;
     margin-bottom: 8px;
+    color: var(--background);
 }
 
 .headerDetails h2{
@@ -83,10 +94,15 @@
 }
 
 .jobType, .workMode{
-    border: 2px solid var(--background);
     border-radius: 50px;
     padding: 5px 25px;
     font-size: 14px;
+    background-color: rgba(211, 159, 63, 0.9);
+    color: white
+}
+
+.workMode{
+    background-color: rgba(123, 176, 123, 0.9);
 }
 
 .jobDetailsSection{
@@ -94,6 +110,28 @@
     width: 100%;
     display: flex;
     gap: 20px;
+}
+
+.jobDetails h1{
+    color: var(--background);
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-weight: 800 !important;
+}
+
+.jobDetails p{
+    line-height: 25px;
+}
+
+.jobDetails h2, .jobDetails h3{
+    color: var(--background);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.jobDetails ol li{
+    margin-left: 30px !important;
+    margin-bottom: 8px;
 }
 
 /* .jobDetails{

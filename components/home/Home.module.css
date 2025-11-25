@@ -37,8 +37,6 @@
 
 
 .homePageBannerContent{
-    max-width: 1300px;
-    width: 100%;
     color: white;
     padding: 20px;
 }
@@ -48,7 +46,7 @@
 }
 
 .homePageBannerContent p{
-    font-size: 15px;
+    font-size: 18px;
     margin: 15px 0 40px 0;
 }
 
@@ -88,4 +86,6 @@
 
 .featuredJobsSection{
   margin: 60px 0;
+  max-width: 1300px;
+  width: 100%;
 }
