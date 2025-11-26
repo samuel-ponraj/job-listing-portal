@@ -72,3 +72,23 @@
     background-color: white;
     color: var(--background);
 }
+
+@media (max-width: 768px) {
+  .roleSwitchBtn{
+    padding: 8px 15px;
+    text-wrap: nowrap;
+    font-size: 14px;
+  }
+
+  .jobListingLogo{
+    font-size: 12px;
+  }
+
+  .headerSection{
+    padding: 10px 20px;
+  }
+
+  .headerButtons ul{
+    gap: 15px;
+  }
+}
