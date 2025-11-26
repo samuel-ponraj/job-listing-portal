@@ -7,7 +7,8 @@ import { BsCashStack } from "react-icons/bs";
 import Link from 'next/link';
 import { Box } from "@mui/material";
 
-const JobListPage = () => {
+
+const JobListPage = ({ search }) => {
 
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
@@ -21,6 +22,7 @@ const JobListPage = () => {
   const [minSalary, setMinSalary] = useState("");
   const [maxSalary, setMaxSalary] = useState("");
   const [sortBy, setSortBy] = useState("");
+  const [searchInput, setSearchInput] = useState(keyword);
 
   // Fetch jobs
   useEffect(() => {
@@ -36,6 +38,12 @@ const JobListPage = () => {
 
     fetchJobs();
   }, []);
+
+ useEffect(() => {
+  if (search) {
+    setKeyword(search);  
+  }
+}, [search]);
 
   // Filter + Sort
   useEffect(() => {
