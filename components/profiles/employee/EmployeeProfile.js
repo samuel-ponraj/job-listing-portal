@@ -26,10 +26,15 @@ import ResumeUpload from './ResumeUpload';
 import { useUser } from "@clerk/clerk-react";
 import AppliedJobs from './appliedjobs/AppliedJobs';
 import { FaCircleCheck } from "react-icons/fa6";
+import { BsFillBriefcaseFill } from "react-icons/bs";
+import Employment from './employment/Employment';
+import { FaUserGraduate } from "react-icons/fa6";
+import Education from './education/Education';
 // import Breadcrumbs from '@mui/material/Breadcrumbs';
 // import Link from '@mui/material/Link';
 // import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 // import { usePathname } from 'next/navigation';
+
 
 
 function EmployeeProfile(props) {
@@ -62,7 +67,9 @@ function EmployeeProfile(props) {
 
   const menuItems = [
     // { text: 'Overview', icon: <DashboardIcon />, value: 'Overview' },
-    { text: 'Profile', icon: <AccountCircleIcon />, value: 'Profile', color: "#3F51B5" },
+    { text: 'Personal Details', icon: <AccountCircleIcon />, value: 'Personal Details', color: "#3F51B5" },
+    { text: 'Employment', icon: <BsFillBriefcaseFill />, value: 'Employment', color: "brown" },
+    { text: 'Education', icon: <FaUserGraduate />, value: 'Education', color: "#fbd900ff" },
     { text: 'Resume', icon: <DescriptionIcon />, value: 'Resume', color: "#FB8C00"  },
     { text: 'Applied Jobs', icon: <FaCircleCheck />, value: 'Applied Jobs', color: "green"  },
   ];
@@ -104,8 +111,12 @@ function EmployeeProfile(props) {
 
   const renderMainContent = () => {
     switch (selectedSection) {
-      case 'Profile':
+      case 'Personal Details':
         return <ProfileForm />;
+      case 'Employment':
+        return <Employment />;
+      case 'Education':
+        return <Education />;
       case 'Resume':
         return <ResumeUpload />;
       case 'Applied Jobs':

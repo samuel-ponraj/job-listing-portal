@@ -80,7 +80,6 @@ export default function JobDetailPage({ jobId }) {
 };
 
 
-
   return (
     <div className={styles.container}>
 		<Toaster position="top-center" richColors />

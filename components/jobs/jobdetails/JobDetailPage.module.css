@@ -1,6 +1,5 @@
 .container{
     padding-top: 68px;
-    
 }
 
 .headerContainer{
@@ -27,6 +26,7 @@
     padding-right: 20px;
     display: flex;
     justify-content: space-between;
+    gap: 30px;
 }
 
 .headerLeft{
@@ -182,5 +182,27 @@
 } */
 
 
+@media (max-width: 768px) {
 
+    .headerContainer{
+        padding: 40px 0;
+    }
 
+  .headerJobdetails{
+    flex-direction: column;
+  }
+
+  .header{
+    flex-direction: column;
+  }
+
+  .headerRight{
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end; */
