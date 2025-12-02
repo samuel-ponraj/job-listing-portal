@@ -206,7 +206,7 @@
     font-size: 14px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .candidateDetails {
     flex-direction: column;
   }
@@ -215,4 +215,26 @@
   .rightSection {
     width: 100%;
   }
+}
+
+
+@media (max-width: 768px) {
+
+    .headerContainer{
+        padding: 40px 0;
+    }
+
+    .headerRight p, .headerRight  a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .header{
+        flex-direction: column;
+    }
+
+    .dates{
+        flex-direction: column;
+        gap: 10px;
+    }
 }
