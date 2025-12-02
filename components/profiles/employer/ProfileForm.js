@@ -1,4 +1,5 @@
 'use client'
+import styles from './ProfileForm.module.css'
 import { Box, Button, Toolbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Toaster, toast } from 'sonner';
@@ -155,7 +156,7 @@ const ProfileForm = () => {
 
         {/* Upload Company Logo */}
         <Box sx={{ gridColumn: '1 / span 2' }}>
-          <label style={{ display: 'block', fontWeight: 500, marginBottom: 8 }}>
+          <label style={{ display: 'block', fontWeight: 500, marginBottom: 8 }} className={styles.label}>
             Upload Company Logo
           </label>
 
@@ -177,11 +178,13 @@ const ProfileForm = () => {
               style={{
                 display: 'inline-block',
                 padding: '8px 16px',
-                border: '1px solid #888',
+                border: '1px solid var(--background)',
                 borderRadius: '6px',
                 cursor: 'pointer',
-                background: '#f7f7f7',
+                color:'#464555',
+                background: 'white',
               }}
+              className={styles.label}
             >
               {uploading ? "Uploading..." : "Browse"}
             </label>
@@ -198,7 +201,7 @@ const ProfileForm = () => {
 
         {/* Company Name */}
         <Box>
-          <label>Company Name</label>
+          <label className={styles.label}>Company Name</label>
           <input name="companyName"
             value={formData.companyName}
             onChange={handleChange}
@@ -211,7 +214,7 @@ const ProfileForm = () => {
 
         {/* Contact Person */}
         <Box>
-          <label>Contact Person</label>
+          <label className={styles.label}>Contact Person</label>
           <input name="contactPerson"
             value={formData.contactPerson}
             onChange={handleChange}
@@ -224,7 +227,7 @@ const ProfileForm = () => {
 
         {/* Email */}
         <Box>
-          <label>Email</label>
+          <label className={styles.label}>Email</label>
           <input
             name="email"
             value={formData.email}
@@ -238,7 +241,7 @@ const ProfileForm = () => {
 
         {/* Phone */}
         <Box>
-          <label>Phone Number</label>
+          <label className={styles.label}>Phone Number</label>
           <input
             name="phone"
             value={formData.phone}
@@ -252,7 +255,7 @@ const ProfileForm = () => {
 
         {/* Website */}
         <Box sx={{ gridColumn: "1 / span 2" }}>
-          <label>Website</label>
+          <label className={styles.label}>Website</label>
           <input
             name="website"
             value={formData.website}
@@ -266,7 +269,7 @@ const ProfileForm = () => {
 
         {/* Industry */}
         <Box>
-          <label>Industry Type</label>
+          <label className={styles.label}>Industry Type</label>
           <input
             name="industry"
             value={formData.industry}
@@ -280,7 +283,7 @@ const ProfileForm = () => {
 
         {/* Company Size */}
         <Box>
-          <label>Company Size</label>
+          <label className={styles.label}>Company Size</label>
           <input
             name="companySize"
             value={formData.companySize}
@@ -294,7 +297,7 @@ const ProfileForm = () => {
 
         {/* Address */}
         <Box sx={{ gridColumn: "1 / span 2" }}>
-          <label>Address Line</label>
+          <label className={styles.label}>Address Line</label>
           <input
             name="address"
             value={formData.address}
@@ -308,7 +311,7 @@ const ProfileForm = () => {
 
         {/* City */}
         <Box>
-          <label>City</label>
+          <label className={styles.label}>City</label>
           <input
             name="city"
             value={formData.city}
@@ -322,7 +325,7 @@ const ProfileForm = () => {
 
         {/* Pincode */}
         <Box>
-          <label>Pincode</label>
+          <label className={styles.label}>Pincode</label>
           <input
             name="pincode"
             value={formData.pincode}
@@ -336,7 +339,7 @@ const ProfileForm = () => {
 
         {/* State */}
         <Box>
-          <label>State</label>
+          <label className={styles.label}>State</label>
           <input
             name="state"
             value={formData.state}
@@ -350,7 +353,7 @@ const ProfileForm = () => {
 
         {/* Country */}
         <Box>
-          <label>Country</label>
+          <label className={styles.label}>Country</label>
           <input
             name="country"
             value={formData.country}
@@ -366,7 +369,7 @@ const ProfileForm = () => {
     
 
         <Box sx={{ gridColumn: "1 / span 2" }}>
-          <label htmlFor="description" style={{marginBottom:'10px'}}>Company Description</label>
+          <label htmlFor="description" style={{marginBottom:'10px'}} className={styles.label}>Company Description</label>
           <Editor
             name="description"
             value={formData.description}
@@ -406,15 +409,6 @@ const inputStyle = {
   boxShadow: ' rgba(0, 0, 0, 0.04) 0px 3px 5px'
 };
 
-const textareaStyle = {
-  width: '100%',
-  padding: '10px',
-  border: 'none',
-  borderRadius: '6px',
-  marginTop: '6px',
-  resize: 'vertical',
-  fontFamily:'inherit',
-  boxShadow: '  rgba(0, 0, 0, 0.04) 0px 3px 5px'
-};
+
 
 export default ProfileForm;

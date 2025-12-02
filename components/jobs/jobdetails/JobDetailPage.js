@@ -67,7 +67,7 @@ export default function JobDetailPage({ jobId }) {
     await updateDoc(employerRef, {
       "company.applications": arrayUnion({
         jobId: job.id,
-        employeeId: user.id,
+        candidateId: user.id,
         appliedAt: new Date(),
       }),
     });

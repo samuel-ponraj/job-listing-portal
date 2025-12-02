@@ -25,6 +25,7 @@ const ProfileForm = () => {
     pincode: "",
     state: "",
     country: "",
+    summary:""
   });
 
   useEffect(() => {
@@ -283,6 +284,21 @@ const ProfileForm = () => {
         </Box>
 
         <Box sx={{ gridColumn: '1 / span 2' }}>
+              <label>Profile Summary</label>
+              <textarea 
+                name='summary'
+                type='text'
+                placeholder='About you...'
+                style={textareaStyle}
+                rows={5}
+                onChange={handleChange}
+                value={formData.summary}
+                required>
+
+              </textarea>
+        </Box>
+
+        <Box sx={{ gridColumn: '1 / span 2' }}>
           <label>Skills</label>
           <input
           name='skills'
@@ -348,6 +364,17 @@ const inputStyle = {
   border: '1px solid #ccc',
   borderRadius: '6px',
   marginTop: '6px',
+  boxShadow: '  rgba(0, 0, 0, 0.04) 0px 3px 5px'
+};
+
+const textareaStyle = {
+  width: '100%',
+  padding: '10px',
+  border: '1px solid #ccc',
+  borderRadius: '6px',
+  marginTop: '6px',
+  resize: 'vertical',
+  fontFamily:'inherit',
   boxShadow: '  rgba(0, 0, 0, 0.04) 0px 3px 5px'
 };
 

@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import Link from "next/link";
 
 const Applications = () => {
   const [loading, setLoading] = useState(true);
@@ -29,38 +30,47 @@ const Applications = () => {
         const companyData = employerSnap.data()?.company;
         const apps = companyData?.applications || [];
 
-        // Fetch employee names for each application
-        const appsWithEmployee = await Promise.all(
+        // Fetch candidate info for each application
+        const appsWithCandidate = await Promise.all(
           apps.map(async (app) => {
-            const employeeRef = doc(db, "users", app.employeeId);
-            const employeeSnap = await getDoc(employeeRef);
+            const candidateRef = doc(db, "users", app.candidateId);
+            const candidateSnap = await getDoc(candidateRef);
 
-            let employeeName = "Unknown";
+            let candidateName = "Unknown";
             let resumeUrl = null;
-            if (employeeSnap.exists()) {
-              const employeeData = employeeSnap.data();
-              employeeName = employeeData?.firstName || "Unknown";
-              resumeUrl = employeeData?.resume?.url || null;
+
+            if (candidateSnap.exists()) {
+              const candidateData = candidateSnap.data();
+
+              candidateName =
+                `${candidateData?.firstName || ""} ${candidateData?.lastName || ""}`
+                  .trim() || "Unknown";
+
+              resumeUrl = candidateData?.resume?.url || null;
             }
 
-            // Get job title from jobs collection
+            // Get job title
             const jobRef = doc(db, "jobs", app.jobId);
             const jobSnap = await getDoc(jobRef);
-            const jobTitle = jobSnap.exists() ? jobSnap.data()?.jobTitle : "Deleted Job";
+            const jobTitle = jobSnap.exists()
+              ? jobSnap.data()?.jobTitle
+              : "Deleted Job";
 
             return {
               ...app,
-              employeeName,
+              candidateName,
               jobTitle,
-              resumeUrl
+              resumeUrl,
             };
           })
         );
 
         // Sort newest first
-        appsWithEmployee.sort((a, b) => b.appliedAt.toDate() - a.appliedAt.toDate());
+        appsWithCandidate.sort(
+          (a, b) => b.appliedAt.toDate() - a.appliedAt.toDate()
+        );
 
-        setApplications(appsWithEmployee);
+        setApplications(appsWithCandidate);
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch applications");
@@ -72,18 +82,23 @@ const Applications = () => {
     fetchApplications();
   }, [isLoaded, loggedUserId]);
 
+  // Delete application
   const handleDelete = async (appl) => {
     if (!confirm("Are you sure you want to delete this application?")) return;
 
     try {
       const employerRef = doc(db, "users", loggedUserId);
 
-      // Remove the application from employer's company.applications
+      // Remove application
       const updatedApps = applications
-        .filter((a) => a.employeeId !== appl.employeeId || a.jobId !== appl.jobId)
+        .filter(
+          (a) =>
+            a.candidateId !== appl.candidateId ||
+            a.jobId !== appl.jobId
+        )
         .map((a) => ({
           jobId: a.jobId,
-          employeeId: a.employeeId,
+          candidateId: a.candidateId,
           appliedAt: a.appliedAt,
         }));
 
@@ -112,35 +127,53 @@ const Applications = () => {
               <tr>
                 <th>S.No.</th>
                 <th>Date</th>
-                <th>Employee Name</th>
+                <th>Candidate Name</th>
                 <th>Job Applied For</th>
                 <th>Resume</th>
                 <th>Action</th>
               </tr>
             </thead>
+
             <tbody>
               {applications.map((app, index) => (
-                <tr key={`${app.employeeId}-${app.jobId}`}>
+                <tr key={`${app.candidateId}-${app.jobId}`}>
                   <td>{index + 1}</td>
                   <td>{app.appliedAt.toDate().toLocaleDateString()}</td>
-                  <td>{app.employeeName}</td>
-                  <td><a
+
+                  <td>
+                    <Link
+                      href={`/candidates/${app.candidateId}`}
+                      className={styles.link}
+                    >
+                      {app.candidateName}
+                    </Link>
+                  </td>
+
+                  <td>
+                    <Link
                       href={`/jobs/${app.jobId}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.link}
                     >
                       {app.jobTitle}
-                    </a></td>
+                    </Link>
+                  </td>
+
                   <td>
-                      {app.resumeUrl ? (
-                        <a href={app.resumeUrl} download className={styles.link}>
-                          Download
-                        </a>
-                      ) : (
-                        "Not uploaded"
-                      )}
-                    </td>
+                    {app.resumeUrl ? (
+                      <a
+                        href={app.resumeUrl}
+                        download
+                        className={styles.link}
+                      >
+                        Download
+                      </a>
+                    ) : (
+                      "Not uploaded"
+                    )}
+                  </td>
+
                   <td>
                     <button
                       onClick={() => handleDelete(app)}
@@ -152,6 +185,7 @@ const Applications = () => {
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       )}

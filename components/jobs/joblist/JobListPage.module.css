@@ -123,21 +123,21 @@
 .jobType{
     margin-top: 5px;
     font-size: 14px;
-    background-color: #DDE8F8;
+    background-color: #4f4194;
     width: fit-content;
     padding: 5px 20px;
     border-radius: 50px;
-    color: var(--background) !important;
+    color: white !important;
 }
 
 .workMode{
   margin-top: 5px;
     font-size: 14px;
-    background-color: lightpink;
+    background-color: #843784;
     width: fit-content;
     padding: 5px 20px;
     border-radius: 50px;
-    color: var(--background) !important;
+    color: white !important;
 }
 
 .sortBtn{
