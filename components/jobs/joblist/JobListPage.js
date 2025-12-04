@@ -13,6 +13,7 @@ import { BsBookmark } from "react-icons/bs";
 import { useUser } from "@clerk/nextjs";
 import { BsBookmarkCheck } from "react-icons/bs";
 import { toast, Toaster } from 'sonner';
+import { MdClose } from "react-icons/md";
 
 
 const JobListPage = ({ search }) => {
@@ -32,6 +33,8 @@ const JobListPage = ({ search }) => {
   const [sortBy, setSortBy] = useState("");
   const [searchInput, setSearchInput] = useState(keyword);
   const [savedJobs, setSavedJobs] = useState([]);
+  const [showFilters, setShowFilters] = useState(true);
+
 
 
   // Fetch jobs
@@ -186,10 +189,21 @@ const JobListPage = ({ search }) => {
     <div className={styles.container}>
       <Toaster position="top-center" richColors />
       <div className={styles.jobListPage}>
+
+        <button 
+            className={styles.filterToggleBtn}
+            onClick={() => setShowFilters(true)}
+            style={{ display:'flex', gap:'8px' }}
+          >
+            <BiFilterAlt className={styles.filterIcon}/> Filters
+          </button>
+
         
         {/* Sidebar Filters */}
-        <div className={styles.sidebar}>
+        <div className={`${styles.sidebar} ${showFilters ? styles.open : ""}`}>
           <h2><BiFilterAlt /> Filters</h2>
+
+          <div className={styles.close} onClick={() => setShowFilters(false)}><MdClose /></div>
           {/* Keyword Search */}
           <Box className={styles.filterInputs}>
             <label>Search by Keywords</label>

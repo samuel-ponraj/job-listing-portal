@@ -19,11 +19,13 @@
 
 .sidebar{
   flex-basis: 25%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-color: white;
   border-radius: 5px;
   padding: 20px;
+  position: sticky;
+  top: 100px;
 }
 
 .sidebar h2 {
@@ -77,6 +79,7 @@
   top: 20px;
   font-size: 23px;
   color: var(--background);
+  cursor: pointer;
 }
 
 .companyLogo {
@@ -157,10 +160,55 @@
   margin-left: auto;
 }
 
+.filterToggleBtn, .close{
+  display: none !important;
+}
+
+
 @media (max-width: 1024px) {
   .jobdetails{
     gap: 15px;
   }
+
+  .filterToggleBtn{
+    display: flex !important;
+    position: absolute;
+    top: 70px;
+    left: 0 ;
+    background-color: var(--background);
+    border: none;
+    padding: 10px 14px;
+    color: white;
+    transform-origin: left top;
+    transform: rotate(-90deg) translateX(-100%); 
+  }
+
+  .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background: #fff;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.15);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 2000;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.close{
+  display: block !important;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: var(--background);
+}
+
 }
 
 @media (max-width: 768px) {
@@ -168,4 +216,9 @@
     gap: 10px;
     flex-direction: column;
   }
+
+  .jobListPage{
+    padding: 90px 0;
+  }
+
 }
