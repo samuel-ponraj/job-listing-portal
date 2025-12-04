@@ -30,6 +30,8 @@ import { BsFillBriefcaseFill } from "react-icons/bs";
 import Employment from './employment/Employment';
 import { FaUserGraduate } from "react-icons/fa6";
 import Education from './education/Education';
+import { BsFillBookmarkCheckFill } from "react-icons/bs";
+import SavedJobs from './savedjobs/SavedJobs';
 // import Breadcrumbs from '@mui/material/Breadcrumbs';
 // import Link from '@mui/material/Link';
 // import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -72,6 +74,7 @@ function EmployeeProfile(props) {
     { text: 'Education', icon: <FaUserGraduate />, value: 'Education', color: "#fbd900ff" },
     { text: 'Resume', icon: <DescriptionIcon />, value: 'Resume', color: "#FB8C00"  },
     { text: 'Applied Jobs', icon: <FaCircleCheck />, value: 'Applied Jobs', color: "green"  },
+    { text: 'Saved Jobs', icon: <BsFillBookmarkCheckFill />, value: 'Saved Jobs', color: "#FFC107"  },
   ];
 
   const userImage = user?.imageUrl
@@ -120,7 +123,9 @@ function EmployeeProfile(props) {
       case 'Resume':
         return <ResumeUpload />;
       case 'Applied Jobs':
-        return <AppliedJobs />;  
+        return <AppliedJobs />; 
+      case 'Saved Jobs':
+        return <SavedJobs />;  
       default:
         return <AppliedJobs />;
     }

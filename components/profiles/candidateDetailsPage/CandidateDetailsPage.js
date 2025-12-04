@@ -7,6 +7,11 @@ import styles from "./CandidateDetailsPage.module.css";
 import { useParams } from "next/navigation";
 import { LuDownload } from "react-icons/lu";
 import Link from "next/link";
+import { PiNoteFill } from "react-icons/pi";
+import { IoBriefcase } from "react-icons/io5";
+import { BiSolidGraduation } from "react-icons/bi";
+import { BiSolidContact } from "react-icons/bi";
+import { IoPerson } from "react-icons/io5";
 
 const CandidateDetailsPage = () => {
   const { candidateId } = useParams(); 
@@ -120,12 +125,12 @@ const CandidateDetailsPage = () => {
 			<div className={styles.leftSection}>
 
           	<div className={styles.summary}>
-				<h2>Summary</h2>
+				<h2><IoPerson /> Summary</h2>
 				<div className={styles.summarytext} dangerouslySetInnerHTML={{ __html: profile.summary }}/>
          	</div>
 
 		  	<div className={styles.employmentDetails}>
-				<h2>Employment</h2>
+				<h2><IoBriefcase /> Employment</h2>
 				<ul>
 				{employment.map((job, index) => (
 					<li key={index}>
@@ -137,7 +142,7 @@ const CandidateDetailsPage = () => {
         	</div>
 
 			<div className={styles.educationDetails}>
-				<h2>Education</h2>
+				<h2><BiSolidGraduation /> Education</h2>
 				<ul>
 				{education.map((edu, index) => (
 					<li key={index}>
@@ -153,7 +158,7 @@ const CandidateDetailsPage = () => {
 			<div className={styles.rightSection}>
 
 			<div className={styles.resume}>
-				<h2>Resume</h2>
+				<h2><PiNoteFill /> Resume</h2>
 				<Link href={resume.url} target="_blank" rel="noopener noreferrer" download>
 					<p>
 						<LuDownload /> {resume.name}
@@ -162,10 +167,10 @@ const CandidateDetailsPage = () => {
         	</div>
 
 			<div className={styles.contactDetails}>
-				<h2>Contact Info</h2>
+				<h2><BiSolidContact /> Contact Info</h2>
 				<div>
-					<p><span>Phone</span>: {profile.phone}</p>
-					<p><span>Email</span>: {profile.email}</p>
+					<p><span><strong>Phone</strong></span>: {profile.phone}</p>
+					<p><span><strong>Email</strong></span>: {profile.email}</p>
 				</div>
         	</div>
 

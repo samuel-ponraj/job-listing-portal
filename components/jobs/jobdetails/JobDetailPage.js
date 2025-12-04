@@ -28,6 +28,7 @@ export default function JobDetailPage({ jobId }) {
       }
     };
 
+
     fetchJob();
   }, [jobId]);
 
@@ -55,7 +56,7 @@ export default function JobDetailPage({ jobId }) {
 
     // Check if the user has already applied for this job
     const alreadyApplied = applications.some(
-      (app) => app.jobId === job.id && app.employeeId === user.id
+      (app) => app.jobId === job.id && app.candidateId === user.id
     );
 
     if (alreadyApplied) {
@@ -78,6 +79,7 @@ export default function JobDetailPage({ jobId }) {
     toast.error("Failed to apply");
   }
 };
+
 
 
   return (

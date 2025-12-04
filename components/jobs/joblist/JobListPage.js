@@ -5,11 +5,19 @@ import { PiBriefcase } from "react-icons/pi";
 import { IoLocationOutline } from "react-icons/io5";
 import { BsCashStack } from "react-icons/bs";
 import Link from 'next/link';
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { Box } from "@mui/material";
+import { BiFilterAlt } from "react-icons/bi";
+import { BsBookmark } from "react-icons/bs";
+import { useUser } from "@clerk/nextjs";
+import { BsBookmarkCheck } from "react-icons/bs";
+import { toast, Toaster } from 'sonner';
 
 
 const JobListPage = ({ search }) => {
 
+  const { user, isLoaded } = useUser();
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
 
@@ -23,6 +31,8 @@ const JobListPage = ({ search }) => {
   const [maxSalary, setMaxSalary] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [searchInput, setSearchInput] = useState(keyword);
+  const [savedJobs, setSavedJobs] = useState([]);
+
 
   // Fetch jobs
   useEffect(() => {
@@ -38,6 +48,22 @@ const JobListPage = ({ search }) => {
 
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+  const fetchSavedJobs = async () => {
+    if (!isLoaded || !user) return;
+
+    const userRef = doc(db, "users", user.id);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      setSavedJobs(userSnap.data()?.savedJobs || []);
+    }
+  };
+
+  fetchSavedJobs();
+}, [isLoaded, user]);
+
 
  useEffect(() => {
   if (search) {
@@ -120,14 +146,50 @@ const JobListPage = ({ search }) => {
 
   }, [keyword, jobLocation, industry, jobType, workMode, minSalary, maxSalary, sortBy, jobs]);
 
+ 
+  const handleSaveJob = async (jobId) => {
+  if (!isLoaded || !user) {
+    toast.error("Please login to save the job");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", user.id);
+    const userSnap = await getDoc(userRef);
+
+    const userData = userSnap.data();
+    const saved = userData?.savedJobs || [];
+
+    if (saved.includes(jobId)) {
+      toast.error("You have already saved this job");
+      return;
+    }
+
+    await updateDoc(userRef, {
+      savedJobs: arrayUnion(jobId),
+    });
+
+    // Update UI immediately
+    setSavedJobs((prev) => [...prev, jobId]);
+
+    toast.success("Job saved successfully!");
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to save job");
+  }
+};
+
+
+
+
   return (
     <div className={styles.container}>
+      <Toaster position="top-center" richColors />
       <div className={styles.jobListPage}>
         
         {/* Sidebar Filters */}
         <div className={styles.sidebar}>
-          <h2>Filters</h2>
-
+          <h2><BiFilterAlt /> Filters</h2>
           {/* Keyword Search */}
           <Box className={styles.filterInputs}>
             <label>Search by Keywords</label>
@@ -145,7 +207,10 @@ const JobListPage = ({ search }) => {
                                     <select
                                       value={industry}
                                       onChange={(e) => setIndustry(e.target.value)}
-                                      style={inputStyle}
+                                      style={{
+                                          ...inputStyle,
+                                          color: workMode ? "#000" : "#888", 
+                                        }}
                                     >
                                       <option value="">Select Industry</option>
                           <option value="Information Technology">Information Technology</option>
@@ -203,7 +268,10 @@ const JobListPage = ({ search }) => {
           <Box className={styles.filterInputs}>
             <label>Work Mode</label>
             <select
-              style={inputStyle}
+              style={{
+                 ...inputStyle,
+                color: workMode ? "#000" : "#888", 
+                }}
               value={workMode}
               onChange={(e) => setWorkMode(e.target.value)}
             >
@@ -218,7 +286,10 @@ const JobListPage = ({ search }) => {
           <Box className={styles.filterInputs}>
             <label>Job Type</label>
             <select
-              style={inputStyle}
+              style={{
+                 ...inputStyle,
+                color: workMode ? "#000" : "#888", 
+                }}
               value={jobType}
               onChange={(e) => setJobType(e.target.value)}
             >
@@ -254,20 +325,34 @@ const JobListPage = ({ search }) => {
         {/* Job List */}
         <div className={styles.jobList}>
 
-          <div style={{ display: 'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <div style={{ display: 'flex', alignItems:'center', justifyContent:'space-between', fontSize:'14px' }}>
             <p>Showing {filteredJobs.length} Jobs</p>
           </div>
 
           {filteredJobs.map((job) => (
             <div key={job.id} className={styles.jobCard}>
+              <div className={styles.bookmark} onClick={() => handleSaveJob(job.id)}>
+                {savedJobs.includes(job.id) ? (
+                    <BsBookmarkCheck />
+                  ) : (
+                    <BsBookmark />
+                  )}
+
+                  
+              </div>
+              
               <div className={styles.companyLogo}>
                 <img src={job.company.companyLogoURL || "/placeholder.png"} alt="" />
               </div>
               
               <div className={styles.job}>
-                <Link href={`/jobs/${job.id}`}>
-                  <h3>{job.jobTitle}</h3>
-                </Link>
+                
+                  <h3>
+                    <Link href={`/jobs/${job.id}`}>
+                      {job.jobTitle}
+                    </Link>
+                  </h3>
+                
                 <h4>{job.company.companyName}</h4>
 
                 <div className={styles.jobdetails}>

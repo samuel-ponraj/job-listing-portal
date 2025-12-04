@@ -59,9 +59,13 @@
 }
 
 .link {
-  color: #0070f3;
-  text-decoration: underline;
-  cursor: pointer;
+  color: #0070f3;;
+  text-decoration: none;
+}
+
+.link:hover{
+text-decoration: underline ;
+ cursor: pointer ;
 }
 
 .approveBtn {

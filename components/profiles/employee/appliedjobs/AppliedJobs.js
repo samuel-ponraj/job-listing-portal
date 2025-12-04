@@ -31,7 +31,7 @@ const AppliedJobs = () => {
           if (!company?.applications) continue;
 
           const myApplications = company.applications.filter(
-            (app) => app.employeeId === currentUserId
+            (app) => app.candidateId === currentUserId
           );
 
           for (const app of myApplications) {
@@ -80,7 +80,7 @@ const AppliedJobs = () => {
 
       const company = employerSnap.data().company;
       const updatedApplications = company.applications.filter(
-        (app) => !(app.jobId === job.id && app.employeeId === currentUserId)
+        (app) => !(app.jobId === job.id && app.candidateId === currentUserId)
       );
 
       await updateDoc(employerRef, {
